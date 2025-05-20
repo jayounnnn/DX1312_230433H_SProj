@@ -154,6 +154,7 @@ MonoBehaviour:
   heroPool:
   - {fileID: 11400000, guid: 9695c0a1873e4da4ea907a39b7b809c1, type: 2}
   - {fileID: 11400000, guid: 74d7a030a1620674e8b3b4f2921fbe4c, type: 2}
+  - {fileID: 11400000, guid: 8ed413f2b97808241b0c701487cc3c74, type: 2}
   viewer: {fileID: 2081454108}
 --- !u!4 &10756490
 Transform:
@@ -1449,10 +1450,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

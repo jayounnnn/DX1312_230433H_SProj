@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dcb916e5c7025643825bdceeb33b347, type: 3}
+  m_Name: Mage3Star
+  m_EditorClassIdentifier: 
+  hero:
+    heroName: Nathan
+    role: 2
+    element: 3
+    starRating: 3
+    heroPortrait: {fileID: 21300000, guid: 7e8478f0c78dbbe449ebb0c24b384474, type: 3}
+    heroModelPrefab: {fileID: 0}
+    baseHP: 10
+    baseATK: 2
+    baseDEF: 3
+    passiveSkillDescription: Holy Shield
+    activeSkillDescription: Light energy

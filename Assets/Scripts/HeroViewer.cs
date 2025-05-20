@@ -29,7 +29,7 @@ public class HeroViewer : MonoBehaviour
         nameText.text = hero.heroName;
         roleText.text = hero.role.ToString();
         elementText.text = hero.element.ToString();
-        starRatingText.text = $"{hero.starRating}?";
+        starRatingText.text = $"{hero.starRating}";
         passiveSkillText.text = hero.passiveSkillDescription;
         activeSkillText.text = hero.activeSkillDescription;
     }
