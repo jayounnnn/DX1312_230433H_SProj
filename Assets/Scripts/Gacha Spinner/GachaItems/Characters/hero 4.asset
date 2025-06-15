@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e17cced8fe80741bf8331893622ede, type: 3}
+  m_Name: hero 4
+  m_EditorClassIdentifier: 
+  itemName: Hero 4
+  itemIcon: {fileID: 21300000, guid: baff63dd71d7bfc4689f1fe3e6cb39f2, type: 3}
+  itemDescription: I'm White
+  starRating: 3
+  attackPower: 250
+  health: 250
+  skillName: I can MOG anyone
