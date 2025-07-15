@@ -181,6 +181,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a62ee6a9252d5d4e88ab9037851c07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridLayout: {fileID: 233366375}
+  MainTilemap: {fileID: 1828710688}
+  TempTilemap: {fileID: 1679273205}
 --- !u!1 &476034347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1215,6 +1218,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9803b6e5f3edb47a10f9278b85691f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  area:
+    m_Position: {x: 0, y: 0, z: 0}
+    m_Size: {x: 2, y: 2, z: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
