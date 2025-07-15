@@ -26,9 +26,6 @@ public class GridBuildingSystem : MonoBehaviour
     private Vector3 prevPos;
 
     #region Unity Methods
-
-    #endregion
-
     private void Awake()
     {
         current = this;
@@ -42,11 +39,9 @@ public class GridBuildingSystem : MonoBehaviour
         tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilePath + "green"));
         tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilePath + "red"));
     }
-
-    #region Tilemap Management
-
     #endregion
 
+    #region Tilemap Management
     private static TileBase[] GetTilesBlock(BoundsInt area, Tilemap tilemap)
     {
         TileBase[] array = new TileBase[area.size.x * area.size.y * area.size.z];
@@ -78,7 +73,16 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
+    #endregion
+
     #region Building Placement
 
+    public void InitializeWithBuilding(GameObject building)
+    {
+        temp = Instantiate(building, Vector3.zero, Quaternion.identity).GetComponent<Building>();
+    }
+
     #endregion
+
+
 }
