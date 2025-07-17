@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public enum TileType
 {
@@ -24,6 +25,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     private Building temp;
     private Vector3 prevPos;
+    private BoundsInt prevArea;
 
     #region Unity Methods
     private void Awake()
@@ -35,10 +37,56 @@ public class GridBuildingSystem : MonoBehaviour
     {
         string tilePath = @"Tiles\";
         tileBases.Add(TileType.Empty, null);
-        tileBases.Add(TileType.White, Resources.Load<TileBase>(tilePath + "white"));
-        tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilePath + "green"));
-        tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilePath + "red"));
+        tileBases.Add(TileType.White, Resources.Load<TileBase>(tilePath + "White"));
+        tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilePath + "Green"));
+        tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilePath + "Red"));
     }
+
+    private void Update()
+    {
+        if (!temp)
+        {
+            return;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            if (EventSystem.current.IsPointerOverGameObject(0))
+            {
+                return;
+            }
+
+            if (!temp.Placed)
+            {
+                Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3Int cellPos = gridLayout.LocalToCell(touchPos);
+
+                if (prevPos != cellPos)
+                {
+                    temp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos
+                        + new Vector3(0.5f, 0.5f, 0.0f));
+                    prevPos = cellPos;
+                    FollowBuilding();
+                }
+            }
+
+            
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (temp.CanBePlaced())
+            {
+                temp.Place();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ClearArea();
+            Destroy(temp.gameObject);
+        }
+    }
+
     #endregion
 
     #region Tilemap Management
@@ -80,6 +128,63 @@ public class GridBuildingSystem : MonoBehaviour
     public void InitializeWithBuilding(GameObject building)
     {
         temp = Instantiate(building, Vector3.zero, Quaternion.identity).GetComponent<Building>();
+        FollowBuilding();
+    }
+
+    private void ClearArea()
+    {
+        TileBase[] toClear = new TileBase[prevArea.size.x * prevArea.size.y * prevArea.size.z];
+        FillTiles(toClear, TileType.Empty);
+        TempTilemap.SetTilesBlock(prevArea, toClear);
+    }
+
+    private void FollowBuilding()
+    {
+        ClearArea();
+
+        temp.area.position = gridLayout.WorldToCell(temp.gameObject.transform.position);
+        BoundsInt buildingArea = temp.area;
+
+        TileBase[] baseArray = GetTilesBlock(buildingArea, MainTilemap);
+
+        int size = baseArray.Length;
+        TileBase[] tileArray = new TileBase[size];
+
+        for (int i = 0; i < baseArray.Length; i++)
+        {
+            if (baseArray[i] == tileBases[TileType.White])
+            {
+                tileArray[i] = tileBases[TileType.Green];
+            }
+            else
+            {
+                FillTiles(tileArray, TileType.Red);
+                break;
+            }
+        }
+        TempTilemap.SetTilesBlock(buildingArea, tileArray);
+        prevArea = buildingArea;
+    }
+
+    public bool CanTakeArea(BoundsInt area)
+    {
+        TileBase[] baseArray = GetTilesBlock(area, MainTilemap);
+        foreach (var b in baseArray)
+        {
+            if (b != tileBases[TileType.White])
+            {
+                Debug.Log("Cannot place here!");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void TakeArea(BoundsInt area)
+    {
+        SetTilesBlock(area, TileType.Empty, TempTilemap);
+        SetTilesBlock(area, TileType.Green, MainTilemap);
     }
 
     #endregion
