@@ -64,7 +64,7 @@ public class GridBuildingSystem : MonoBehaviour
                 if (prevPos != cellPos)
                 {
                     temp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos
-                        + new Vector3(0.5f, 0.5f, 0.0f));
+                        + new Vector3(.5f, .5f, 0f));
                     prevPos = cellPos;
                     FollowBuilding();
                 }
@@ -75,9 +75,15 @@ public class GridBuildingSystem : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.Space))
         {
+            Debug.Log("Trying to place...");
             if (temp.CanBePlaced())
             {
                 temp.Place();
+                Debug.Log("Building placed.");
+            }
+            else
+            {
+                Debug.LogWarning("Cannot place here!");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
@@ -100,6 +106,8 @@ public class GridBuildingSystem : MonoBehaviour
             Vector3Int pos = new Vector3Int(v.x, v.y, 0);
             array[counter] = tilemap.GetTile(pos);
             counter++;
+
+            Debug.Log($"Tile under building: {tilemap.GetTile(pos)}");
         }
 
         return array;
@@ -171,9 +179,14 @@ public class GridBuildingSystem : MonoBehaviour
         TileBase[] baseArray = GetTilesBlock(area, MainTilemap);
         foreach (var b in baseArray)
         {
+            if (b != null)
+            {
+                Debug.Log($"Comparing tile: {b.name} vs White: {tileBases[TileType.White]?.name}");
+            }
+
             if (b != tileBases[TileType.White])
             {
-                Debug.Log("Cannot place here!");
+                Debug.LogWarning("Tile mismatch! Cannot place here.");
                 return false;
             }
         }
