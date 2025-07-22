@@ -210,6 +210,40 @@ namespace jayounnnn_HeroBrew
 
             float h = PlaneOrtographicSize();
             float w = h * _camera.aspect;
+
+            if (h > (_up + _down) / 2.0f)
+            {
+                _zoom = (_up + _down) / 2.0f;
+            }
+            if (w > (_right + _left) / 2.0f)
+            {
+                _zoom = (_right + _left) / 2.0f / _camera.aspect;
+            }
+
+            h = PlaneOrtographicSize();
+            w = h * _camera.aspect;
+
+            Vector3 tr = _root.position + _root.right.normalized * w + _root.forward.normalized * h;
+            Vector3 tl = _root.position - _root.right.normalized * w + _root.forward.normalized * h;
+            Vector3 dr = _root.position + _root.right.normalized * w - _root.forward.normalized * h;
+            Vector3 dl = _root.position - _root.right.normalized * w - _root.forward.normalized * h;
+
+            if (tr.x > _center.x + _right)
+            {
+                _root.position += Vector3.left * Mathf.Abs(tr.x - (_center.x + _right));
+            }
+            if (tl.x < _center.x - _left)
+            {
+                _root.position += Vector3.right * Mathf.Abs((_center.x - _left) - tl.x);
+            }
+            if (tr.z > _center.z + _up)
+            {
+                _root.position += Vector3.back * Mathf.Abs(tr.z - (_center.z + _up));
+            }
+            if (dl.z < _center.z - _down)
+            {
+                _root.position += Vector3.forward * Mathf.Abs((_center.z - _down) - dl.z);
+            }
         }
         private Vector3 CameraScreenPositionToWorldPosition(Vector2 position)
         {
