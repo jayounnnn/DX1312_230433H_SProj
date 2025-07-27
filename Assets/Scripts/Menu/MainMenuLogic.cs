@@ -38,7 +38,7 @@ public class MainMenuLogic : MonoBehaviour
     {
         buttonSound.Play();
         // Directly load the game scene
-        SceneManager.LoadScene("DemoScene");
+        SceneManager.LoadScene("MainBase");
     }
 
     // SETTINGS

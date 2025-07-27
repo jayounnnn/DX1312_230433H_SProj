@@ -11,6 +11,8 @@ namespace jayounnnn_HeroBrew
         public int CostCrystal = 0;
         public int CostStamina = 0;
 
+        public bool Placed { get; private set; }
+
         //public string id = "";
         private static Building _instance = null; public static Building instance { get { return _instance; } set { _instance = value; } }
 
@@ -87,6 +89,20 @@ namespace jayounnnn_HeroBrew
             {
                 _baseArea.sharedMaterial.color = Color.red;
             }
+        }
+
+        public void RemoveBaseColour()
+        {
+            if (_baseArea != null)
+            {
+                Destroy(_baseArea.gameObject);
+                _baseArea = null;
+            }
+        }
+
+        public void SetPlaced(bool placed)
+        {
+            this.Placed = placed;
         }
     }
 }
