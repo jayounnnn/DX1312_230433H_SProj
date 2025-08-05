@@ -293,6 +293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1453039538652802135}
   - component: {fileID: 5261667091025679897}
+  - component: {fileID: -3636325422655895248}
   m_Layer: 0
   m_Name: Gold_Mine
   m_TagString: Untagged
@@ -329,7 +330,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25565ce8200cadb4aa57a2c8f8e32db8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: goldmine
+  BuildingID: none
+  CostGold: 0
+  CostCrystal: 0
+  CostStamina: 0
   _rows: 3
   _columns: 3
   _baseArea: {fileID: 4244643660047074291}
@@ -337,6 +341,24 @@ MonoBehaviour:
   - level: 1
     icon: {fileID: 0}
     mesh: {fileID: 1564751944209131908}
+--- !u!114 &-3636325422655895248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012705786744153555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c607736abdfd7e4bbfa257c9c2abfb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  maxCapacity: 500
+  productionRate: 1
+  currentAmount: 0
+  collectButton: {fileID: 0}
+  amountText: {fileID: 0}
 --- !u!1 &8391172985592997249
 GameObject:
   m_ObjectHideFlags: 0

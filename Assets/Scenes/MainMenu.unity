@@ -1889,8 +1889,8 @@ MonoBehaviour:
   musicSource: {fileID: 1692671899}
   sfxSources: []
   sfxPoolSize: 10
-  musicMainMenu: {fileID: 8300000, guid: c9abae3b404d6584d903df8aaa1a2693, type: 3}
-  musicMainBase: {fileID: 8300000, guid: 28b367d2e9f7f4044966d2816feb7494, type: 3}
+  musicMainMenu: {fileID: 8300000, guid: 621ca87026ecf564cb09d5c43d20456b, type: 3}
+  musicMainBase: {fileID: 8300000, guid: 621ca87026ecf564cb09d5c43d20456b, type: 3}
   soundEffectEntries: []
 --- !u!4 &2108899853
 Transform:
