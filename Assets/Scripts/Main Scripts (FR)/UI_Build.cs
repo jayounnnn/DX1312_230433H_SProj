@@ -101,11 +101,14 @@ namespace jayounnnn_HeroBrew
             building.SetPlaced(true);
             building.RemoveBaseColour();
             CameraController.instance.isPlacingBuilding = false;
+            BuildingManager.FinalizePlacement(building);
             Building.instance = null;
 
             // Hide UI elements
             UI_Main.instance.SetStatus(true);
             UI_Build.instance.SetStatus(false);
+
+            UI_Main.instance.UpdateCurrencyUI();
         }
 
         public void CancelBuild()

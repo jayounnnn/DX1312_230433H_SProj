@@ -81,7 +81,7 @@ namespace jayounnnn_HeroBrew
             _root.localEulerAngles = Vector3.zero;
 
             _pivot.localPosition = Vector3.zero;
-            _pivot.localEulerAngles = new Vector3(_angle, 0, 0);
+            _pivot.localEulerAngles = new Vector3(_angle, 180, 0);
 
             _target.localPosition = new Vector3(0, 0, -100);
             _target.localEulerAngles = Vector3.zero;

@@ -26,6 +26,11 @@ namespace jayounnnn_HeroBrew
         public void SetStatus(bool status)
         {
             _elements.SetActive(status);
+            if (status)
+            {
+                foreach (var ui in _elements.GetComponentsInChildren<UI_Building>(true))
+                    ui.RefreshButtonStateAndCost();
+            }
         }
 
         private void CloseShop()

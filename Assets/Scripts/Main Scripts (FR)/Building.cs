@@ -6,10 +6,10 @@ namespace jayounnnn_HeroBrew
 
     public class Building : MonoBehaviour
     {
-        public string BuildingID = "none";
-        public int CostGold = 0;
-        public int CostCrystal = 0;
-        public int CostStamina = 0;
+        public string BuildingID { get; private set; } = "none";
+        public int CostGold { get; private set; }
+        public int CostCrystal { get; private set; }
+        public int CostStamina { get; private set; }
 
         public bool Placed { get; private set; }
 
@@ -103,6 +103,14 @@ namespace jayounnnn_HeroBrew
         public void SetPlaced(bool placed)
         {
             this.Placed = placed;
+        }
+
+        public void SetPurchaseTerms(string id, int gold, int crystal, int stamina)
+        {
+            BuildingID = id;
+            CostGold = gold;
+            CostCrystal = crystal;
+            CostStamina = stamina;
         }
     }
 }
