@@ -13,42 +13,46 @@ namespace jayounnnn_HeroBrew
         public float currentAmount = 0f;
 
         private float lastUpdateTime;
+        private Building _building;
 
-        [SerializeField] private GameObject collectButton;
-        [SerializeField] private TextMeshProUGUI amountText;
+        // (Optional if you’re keeping a world “bubble” on the prefab)
+        [SerializeField] private GameObject collectButtonBubble;  // can be null
+        [SerializeField] private TextMeshProUGUI amountTextBubble; // can be null
+
+        public float Fill01 => Mathf.Clamp01(maxCapacity <= 0 ? 0 : currentAmount / maxCapacity);
+        public int AmountInt => Mathf.FloorToInt(currentAmount);
 
         private void Start()
         {
             lastUpdateTime = Time.time;
-            UpdateDisplay();
+            UpdateBubble();
+        }
+
+        private void Awake()
+        {
+            _building = GetComponent<Building>();
         }
 
         private void Update()
         {
-            if (Building.instance != this.GetComponent<Building>() || !Building.instance.Placed)
-                return;
+            if (_building == null || !_building.Placed) return;
 
             float delta = Time.time - lastUpdateTime;
             lastUpdateTime = Time.time;
 
-            currentAmount += delta * productionRate;
-            currentAmount = Mathf.Min(currentAmount, maxCapacity);
-
-            UpdateDisplay();
-
-            if (collectButton != null)
-                collectButton.SetActive(currentAmount >= 1f);
+            currentAmount = Mathf.Min(currentAmount + delta * productionRate, maxCapacity);
+            UpdateBubble();
         }
 
-        private void UpdateDisplay()
+        private void UpdateBubble()
         {
-            if (amountText != null)
-                amountText.text = Mathf.FloorToInt(currentAmount).ToString();
+            if (amountTextBubble) amountTextBubble.text = AmountInt.ToString();
+            if (collectButtonBubble) collectButtonBubble.SetActive(currentAmount >= 1f);
         }
 
         public void Collect()
         {
-            int amount = Mathf.FloorToInt(currentAmount);
+            int amount = AmountInt;
             if (amount <= 0) return;
 
             var player = FindObjectOfType<Player>();
@@ -61,11 +65,8 @@ namespace jayounnnn_HeroBrew
                     case ResourceType.Stamina: player.AddStamina(amount); break;
                 }
             }
-
             currentAmount = 0;
-            UpdateDisplay();
-            if (collectButton != null)
-                collectButton.SetActive(false);
+            UpdateBubble();
         }
     }
 }

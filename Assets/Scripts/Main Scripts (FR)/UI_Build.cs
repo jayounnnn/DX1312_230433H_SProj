@@ -9,6 +9,7 @@ namespace jayounnnn_HeroBrew
     public class UI_Build : MonoBehaviour
     {
         [SerializeField] public GameObject _elements = null;
+        [SerializeField] private Canvas _canvas; // assign your main Canvas
 
 
         public RectTransform buttonConfirm = null;
@@ -28,12 +29,10 @@ namespace jayounnnn_HeroBrew
             buttonConfirm.gameObject.GetComponent<Button>().onClick.AddListener(ConfirmBuild);
             buttonCancel.gameObject.GetComponent<Button>().onClick.AddListener(CancelBuild);
             buttonRotate.gameObject.GetComponent<Button>().onClick.AddListener(RotateBuilding);
-            buttonConfirm.anchorMin = Vector3.zero;
-            buttonConfirm.anchorMax = Vector3.zero;
-            buttonCancel.anchorMin = Vector3.zero;
-            buttonCancel.anchorMax = Vector3.zero;
-            buttonRotate.anchorMin = Vector3.zero;
-            buttonRotate.anchorMax = Vector3.zero;
+            var c = Vector2.one * 0.5f;
+            buttonConfirm.anchorMin = c; buttonConfirm.anchorMax = c;
+            buttonCancel.anchorMin = c; buttonCancel.anchorMax = c;
+            buttonRotate.anchorMin = c; buttonRotate.anchorMax = c;
 
         }
 
@@ -41,30 +40,22 @@ namespace jayounnnn_HeroBrew
         {
             if (Building.instance != null && CameraController.instance.isPlacingBuilding)
             {
-                Vector3 end = UI_Main.instance._grid.GetEndPosition(Building.instance);
+                Vector3 world = Building.instance.transform.position;
 
-                Vector3 planeDownLeft = CameraController.instance.CameraScreenPositionToPlanePosition(Vector2.zero);
-                Vector3 planeTopRight = CameraController.instance.CameraScreenPositionToPlanePosition(new Vector2(Screen.width, Screen.height));
+                Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(
+                    CameraController.instance.UICamera, world);
 
-                float width = planeTopRight.x - planeDownLeft.x;
-                float height = planeTopRight.z - planeDownLeft.z;
+                RectTransform canvasRect = (RectTransform)_canvas.transform;
 
-                float endWidth = end.x - planeDownLeft.x;
-                float endHeight = end.z - planeDownLeft.z;
+                Vector2 localPoint;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    canvasRect, screenPoint, _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera,
+                    out localPoint);
 
-                Vector2 screenPoint = new Vector2(endWidth / width * Screen.width, endHeight / height * Screen.height);
-
-                Vector2 confirmPoint = screenPoint;
-                confirmPoint.x += (buttonConfirm.rect.width + 10.0f);
-                buttonConfirm.anchoredPosition = confirmPoint;
-
-                Vector2 cancelPoint = screenPoint;
-                cancelPoint.x -= (buttonCancel.rect.width + 10.0f);
-                buttonCancel.anchoredPosition = cancelPoint;
-
-                Vector2 rotatePoint = screenPoint;
-                rotatePoint.y -= (buttonRotate.rect.height + 35.0f);
-                buttonRotate.anchoredPosition = rotatePoint;
+                // Now localPoint is in canvas space; set relative to the canvas origin
+                buttonConfirm.anchoredPosition = localPoint + new Vector2(+(buttonConfirm.rect.width + 10f), 100f);
+                buttonCancel.anchoredPosition = localPoint + new Vector2(-(buttonCancel.rect.width + 10f), 100f);
+                buttonRotate.anchoredPosition = localPoint + new Vector2(0f, -(buttonRotate.rect.height + 5.0f));
             }
         }
 

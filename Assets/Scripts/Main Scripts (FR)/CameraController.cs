@@ -14,6 +14,7 @@ namespace jayounnnn_HeroBrew
         [SerializeField] private float _zoomSpeed = 5.0f;
         [SerializeField] private float _moveSmooth = 5;
         [SerializeField] private float _zoomSmooth = 5;
+        public Camera UICamera => _camera;
 
         private InputActions _inputActions = null;
 
@@ -109,7 +110,7 @@ namespace jayounnnn_HeroBrew
 
         private void MoveStarted()
         {
-            if (UI_Main.instance.isActive)
+            if (UI_Main.instance.isActive && !UI_Shop.instance._elements.activeSelf)
             {
                 if (_building)
                 {
@@ -121,7 +122,7 @@ namespace jayounnnn_HeroBrew
                     }
                 }
                 }
-                if (_movingBuilding == false) {
+                if (_movingBuilding == false && !UI_Shop.instance._elements.activeSelf) {
                 {
                     _moving = true;
                 }
@@ -135,7 +136,7 @@ namespace jayounnnn_HeroBrew
         }
         private void ZoomStarted()
         {
-            if (UI_Main.instance.isActive)
+            if (UI_Main.instance.isActive && !UI_Shop.instance._elements.activeSelf)
             {
                 Vector2 touch0 = _inputActions.Main.TouchPosition0.ReadValue<Vector2>();
                 Vector2 touch1 = _inputActions.Main.TouchPosition1.ReadValue<Vector2>();
