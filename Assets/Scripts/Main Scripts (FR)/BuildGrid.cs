@@ -14,6 +14,14 @@ namespace jayounnnn_HeroBrew
 
         public List<Building> buildings = new List<Building>();
 
+        private readonly HashSet<Vector2Int> _reserved = new HashSet<Vector2Int>();
+
+        private void Start()
+        {
+            ReserveCenterArea(5, 5);
+        }
+
+
         public Vector3 GetStartPosition(int x, int y)
         {
             Vector3 position = transform.position;
@@ -53,23 +61,47 @@ namespace jayounnnn_HeroBrew
 
         public bool CanPlaceBuilding(Building building, int x, int y)
         {
-            if (building.currentX < 0 || building.currentY < 0 || building.currentX + building.columns > _columns || building.currentY + building.rows > _rows )
-            {
+            if (x < 0 || y < 0 || x + building.columns > _columns || y + building.rows > _rows)
                 return false;
-            }
+
+            Rect candidate = new Rect(x, y, building.columns, building.rows);
 
             for (int i = 0; i < buildings.Count; i++)
             {
-                Rect rect1 = new Rect(buildings[i].currentX, buildings[i].currentY, buildings[i].columns, buildings[i].rows);
-                Rect rect2 = new Rect(building.currentX, building.currentY, building.columns, building.rows);
-                if (rect2.Overlaps(rect1))
-                {
+                var b = buildings[i];
+                if (b == null || b == building || !b.Placed) continue;
+
+                Rect occupied = new Rect(b.currentX, b.currentY, b.columns, b.rows);
+                if (candidate.Overlaps(occupied))
                     return false;
+            }
+
+            for (int ix = x; ix < x + building.columns; ix++)
+            {
+                for (int iy = y; iy < y + building.rows; iy++)
+                {
+                    if (_reserved.Contains(new Vector2Int(ix, iy)))
+                        return false;
                 }
             }
 
-                return true;
+            return true;
         }
+
+        public void ReserveArea(int x, int y, int width, int height)
+        {
+            for (int ix = x; ix < x + width; ix++)
+                for (int iy = y; iy < y + height; iy++)
+                    _reserved.Add(new Vector2Int(ix, iy));
+        }
+
+        public void ReserveCenterArea(int width, int height)
+        {
+            int startX = Mathf.Max(0, (_columns - width) / 2);
+            int startY = Mathf.Max(0, (_rows - height) / 2);
+            ReserveArea(startX, startY, width, height);
+        }
+
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()

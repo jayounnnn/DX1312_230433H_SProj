@@ -69,21 +69,33 @@ namespace jayounnnn_HeroBrew
 
         private void Start()
         {
+            EnsureMusicSource();
             PlayMusicForScene(SceneManager.GetActiveScene().name);
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            EnsureMusicSource();
             PlayMusicForScene(scene.name);
         }
 
         public void PlayMusicForScene(string sceneName)
         {
-            if (sceneName == "MainMenu")
-                PlayMusic(musicMainMenu);
-            else if (sceneName == "MainBase")
-                PlayMusic(musicMainBase);
-            // Add more scene checks if needed
+            //Debug.Log($"[AudioManager] Scene loaded: {sceneName}");
+            AudioClip clip = null;
+
+            // be exact about names/casing here
+            if (sceneName == "MainMenu") clip = musicMainMenu;
+            else if (sceneName == "MainBase") clip = musicMainBase;
+            else clip = musicMainBase; // fallback
+
+            if (clip == null)
+            {
+                //Debug.LogWarning($"[AudioManager] No music clip assigned for scene '{sceneName}'.");
+                return;
+            }
+
+            PlayMusic(clip);
         }
 
         public void PlayMusic(AudioClip clip)
@@ -116,6 +128,18 @@ namespace jayounnnn_HeroBrew
             }
 
             Debug.LogWarning("[AudioManager] No available audio sources for SFX pool.");
+        }
+
+        private void EnsureMusicSource()
+        {
+            if (musicSource == null)
+            {
+                musicSource = gameObject.GetComponent<AudioSource>();
+                if (musicSource == null) musicSource = gameObject.AddComponent<AudioSource>();
+                musicSource.playOnAwake = false;
+                musicSource.loop = true;
+                musicSource.volume = 0.05f;
+            }
         }
     }
 }

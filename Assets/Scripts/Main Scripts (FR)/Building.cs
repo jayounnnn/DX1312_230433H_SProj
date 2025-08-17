@@ -58,6 +58,9 @@ namespace jayounnnn_HeroBrew
         public void RemoveFromGrid()
         {
             _instance = null;
+            // Remove from grid list if it somehow got added before removal
+            UI_Main.instance._grid.buildings.Remove(this);
+
             UI_Build.instance.SetStatus(false);
             CameraController.instance.isPlacingBuilding = false;
             Destroy(gameObject);

@@ -9,7 +9,7 @@ namespace jayounnnn_HeroBrew
     public class UI_Build : MonoBehaviour
     {
         [SerializeField] public GameObject _elements = null;
-        [SerializeField] private Canvas _canvas; // assign your main Canvas
+        [SerializeField] private Canvas _canvas; 
 
 
         public RectTransform buttonConfirm = null;
@@ -52,7 +52,6 @@ namespace jayounnnn_HeroBrew
                     canvasRect, screenPoint, _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera,
                     out localPoint);
 
-                // Now localPoint is in canvas space; set relative to the canvas origin
                 buttonConfirm.anchoredPosition = localPoint + new Vector2(+(buttonConfirm.rect.width + 10f), 100f);
                 buttonCancel.anchoredPosition = localPoint + new Vector2(-(buttonCancel.rect.width + 10f), 100f);
                 buttonRotate.anchoredPosition = localPoint + new Vector2(0f, -(buttonRotate.rect.height + 5.0f));
@@ -66,39 +65,31 @@ namespace jayounnnn_HeroBrew
 
         private void ConfirmBuild()
         {
-            if (Building.instance == null)
-            {
-                return;
-            }
-
+            if (Building.instance == null) return;
             var player = FindObjectOfType<Player>();
-            if (player == null)
-            {
-                return;
-            }
+            if (player == null) return;
 
             var building = Building.instance;
+
+            if (!UI_Main.instance._grid.CanPlaceBuilding(building, building.currentX, building.currentY))
+                return;
 
             bool enoughGold = player.SpendGold(building.CostGold);
             bool enoughCrystal = player.SpendCrystal(building.CostCrystal);
             bool enoughStamina = player.SpendStamina(building.CostStamina);
+            if (!enoughGold || !enoughCrystal || !enoughStamina) return;
 
-            if (!enoughGold || !enoughCrystal || !enoughStamina)
-            {
-                return;
-            }
-
-            // Finalise placement
             building.SetPlaced(true);
             building.RemoveBaseColour();
+
+            UI_Main.instance._grid.buildings.Add(building);
+
             CameraController.instance.isPlacingBuilding = false;
             BuildingManager.FinalizePlacement(building);
             Building.instance = null;
 
-            // Hide UI elements
             UI_Main.instance.SetStatus(true);
             UI_Build.instance.SetStatus(false);
-
             UI_Main.instance.UpdateCurrencyUI();
         }
 
